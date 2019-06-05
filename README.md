@@ -78,6 +78,7 @@ Features
 | NOT AVAILABLE	| complete | stream_get_listen_key |
 | NOT AVAILABLE	| complete | stream_keepalive |
 | NOT AVAILABLE	| complete | stream_close |
+| 	| complete | _order_format_print (fancy order printing) |
 
 Quick Start
 -----------
@@ -158,13 +159,25 @@ Quick Start
     except:
         print('no orders open')
         
+        
     try: # Better formatting using tabulate
         open_orders = client.get_open_orders(symbol='XRPUSDT')
         order_formatted = client._order_format_print(open_orders, orient='h')
         print(order_formatted)
     except:
         print('no orders open')
+        
+        Output Below
+        
+        symbol      orderId  clientOrderId      price    origQty ...  type    side    stopPrice   ... 
+        --------  ---------  ---------------  -------  --------- ...  ------  ------  ----------- ...
+        XRPUSDT    53289178                         2     250    ...  LIMIT   SELL                ... 
+        XRPUSDT    53289160                         2     127.5  ...  LIMIT   SELL                ... 
 
+
+
+
+ 
     
 
 Donate
