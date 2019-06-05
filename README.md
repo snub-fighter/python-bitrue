@@ -27,12 +27,6 @@ Features
 - Simple handling of authentication
 - No need to generate timestamps yourself, the wrapper does it for you
 - Response exception handling
-- Websocket handling with reconnection and multiplexed connections
-- Symbol Depth Cache
-- Historical Kline/Candle fetching function
-- Withdraw functionality
-- Deposit addresses
-
 
 
 | Bitrue Official API | Status | python-bitrue |
