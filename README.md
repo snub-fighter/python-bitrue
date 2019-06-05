@@ -1,5 +1,5 @@
 # python-bitrue
-A package that integrates into the Bitrue API 
+A package to communicate with the Bitrue API 
 ==================================
 Welcome to python-bitrue 0.0.1
 ==================================
