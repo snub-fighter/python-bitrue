@@ -190,7 +190,7 @@ class Client(object):
         options = Options()
         options.headless = headless
         self.driver = webdriver.Firefox(options=options, firefox_profile=data_path, executable_path=self.gecko)
-        self.coilurl = 'https://coil.com/p/Hodor/Xumm/GcD8MEL4B'
+        self.coilurl = 'https://coil.com/p/nerf_herder/Python-Package-Coil-Enabled/GRn2W-j5t'
         self.driver.get(self.coilurl)
         while True:
             if q.empty():
