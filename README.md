@@ -9,9 +9,9 @@ Note
 
 
 
-This is an unofficial Python wrapper for the `Bitrue exchange REST API v1/ <https://github.com/Bitrue-exchange/bitrue-official-api-docs>`_. I am in no way affiliated with Bitrue, use at your own risk.
+This is an unofficial Python wrapper for the [Bitrue exchange REST API v1](https://github.com/Bitrue-exchange/bitrue-official-api-docs). I am in no way affiliated with Bitrue, use at your own risk.
 
-If you came here looking for the `Bitrue exchange <https://www.binance.com/?ref=10099792>`_ to purchase cryptocurrencies, then `go here <https://www.bitrue.com/activity/task/task-landing?inviteCode=EWHAHT>`_. If you want to automate interactions with Binance stick around.
+If you came here looking for the [Bitrue exchange](https://www.bitrue.com/activity/task/task-landing?inviteCode=EWHAHT) to purchase cryptocurrencies, then [go here](https://www.bitrue.com/activity/task/task-landing?inviteCode=EWHAHT). If you want to automate interactions with Bitrue stick around.
 
 
 Source code
@@ -19,9 +19,6 @@ Source code
 
 Documentation
   https://python-bitrue.readthedocs.io/en/latest/  (pending release)
-
-Binance  Telegram
-  https://t.me/BitrueOfficial
 
 Features
 --------
@@ -42,24 +39,24 @@ Features
 | ------------- | ------------- | ----- |
 | [General endpoints (PUBLIC)](https://github.com/Bitrue-exchange/bitrue-official-api-docs#general-endpoints)|	 | |
 | [Test connectivity](https://github.com/Bitrue-exchange/bitrue-official-api-docs#test-connectivity)	| complete | 			ping |
-| [Check server time]	 (https://github.com/Bitrue-exchange/bitrue-official-api-docs#check-server-time)| complete | get_server_time |
-| [Exchange information]（Some fields not support. only reserved）	 (https://github.com/Bitrue-exchange/bitrue-official-api-docs#exchange-information-some-fields-not-support-only-reserved)	| complete | get_exchange_info |
-| [Symbol Info (From Exchange Info)]	| complete | get_symbol_info |
+| [Check server time](https://github.com/Bitrue-exchange/bitrue-official-api-docs#check-server-time)| complete | get_server_time |
+| [Exchange information (Some fields not support. only reserved)](https://github.com/Bitrue-exchange/bitrue-official-api-docs#exchange-information-some-fields-not-support-only-reserved)	| complete | get_exchange_info |
+| [Symbol Info(From Exchange Info)]	| complete | get_symbol_info |
 | Market Data endpoints (PUBLIC)]| | |
-| [Order book]	 (https://github.com/Bitrue-exchange/bitrue-official-api-docs#order-book)	| complete | get_order_book |
-| [Recent trades list]	 (https://github.com/Bitrue-exchange/bitrue-official-api-docs#recent-trades-list)	| complete | get_recent_trades |
-| [Old trade lookup (MARKET_DATA)]	 (https://github.com/Bitrue-exchange/bitrue-official-api-docs#old-trade-lookup-market_data)	| complete | get_historical_trades |
-| [Compressed/Aggregate trades list]	 (https://github.com/Bitrue-exchange/bitrue-official-api-docs#compressedaggregate-trades-list)	| complete | get_aggregate_trades |
+| [Order book](https://github.com/Bitrue-exchange/bitrue-official-api-docs#order-book)	| complete | get_order_book |
+| [Recent trades list](https://github.com/Bitrue-exchange/bitrue-official-api-docs#recent-trades-list)	| complete | get_recent_trades |
+| [Old trade lookup (MARKET_DATA)](https://github.com/Bitrue-exchange/bitrue-official-api-docs#old-trade-lookup-market_data)	| complete | get_historical_trades |
+| [Compressed/Aggregate trades list](https://github.com/Bitrue-exchange/bitrue-official-api-docs#compressedaggregate-trades-list)	| complete | get_aggregate_trades |
 | | IN DEVELOPMENT | aggregate_trade_iter |
 | NOT AVAILABLE	| get_klines |
 | NOT AVAILABLE	| REQUIRES KLINES	| _get_earliest_valid_timestamp |
 | NOT AVAILABLE	| REQUIRES KLINES	| get_historical_klines |
 | NOT AVAILABLE	| REQUIRES KLINES	| get_historical_klines_generator |
-| [24hr ticker price change statistics]	 (https://github.com/Bitrue-exchange/bitrue-official-api-docs#24hr-ticker-price-change-statistics)	| complete | get_ticker_24h |
-| [Symbol price ticker]	 (https://github.com/Bitrue-exchange/bitrue-official-api-docs#symbol-price-ticker)	| complete | get_ticker_price |
-| [Symbol order book ticker]	 (https://github.com/Bitrue-exchange/bitrue-official-api-docs#symbol-order-book-ticker) | complete | get_orderbook_ticker |
+| [24hr ticker price change statistics](https://github.com/Bitrue-exchange/bitrue-official-api-docs#24hr-ticker-price-change-statistics)	| complete | get_ticker_24h |
+| [Symbol price ticker](https://github.com/Bitrue-exchange/bitrue-official-api-docs#symbol-price-ticker)	| complete | get_ticker_price |
+| [Symbol order book ticker](https://github.com/Bitrue-exchange/bitrue-official-api-docs#symbol-order-book-ticker) | complete | get_orderbook_ticker |
 | [Account endpoints (PRIVATE)] | | |
-| [New order (TRADE)]	 (https://github.com/Bitrue-exchange/bitrue-official-api-docs#new-order--trade) | complete | create_order |
+| [New order (TRADE)](https://github.com/Bitrue-exchange/bitrue-official-api-docs#new-order--trade) | complete | create_order |
 | | complete | order_limit |
 | | complete | order_limit_buy |
 | | complete | order_limit_sell |
@@ -67,13 +64,13 @@ Features
 | | complete | order_market_buy |
 | | complete | order_market_sell |
 | NOT AVAILABLE | complete | create_test_order |
-| [Query order (USER_DATA)]	 (https://github.com/Bitrue-exchange/bitrue-official-api-docs#query-order-user_data)  | complete | get_order |
-| [Cancel order (TRADE)]	 (https://github.com/Bitrue-exchange/bitrue-official-api-docs#cancel-order-trade)	 | complete | cancel_order |
-| [Current open orders (USER_DATA)]	 (https://github.com/Bitrue-exchange/bitrue-official-api-docs#current-open-orders-user_data) | complete | get_open_orders |
-| [All orders (USER_DATA)]	 (https://github.com/Bitrue-exchange/bitrue-official-api-docs#all-orders-user_data) | complete | get_all_orders |
-| [Account information (USER_DATA)]	 (https://github.com/Bitrue-exchange/bitrue-official-api-docs#account-information-user_data) | complete | get_account |
+| [Query order (USER_DATA)](https://github.com/Bitrue-exchange/bitrue-official-api-docs#query-order-user_data)  | complete | get_order |
+| [Cancel order (TRADE)](https://github.com/Bitrue-exchange/bitrue-official-api-docs#cancel-order-trade)	 | complete | cancel_order |
+| [Current open orders (USER_DATA)](https://github.com/Bitrue-exchange/bitrue-official-api-docs#current-open-orders-user_data) | complete | get_open_orders |
+| [All orders (USER_DATA)](https://github.com/Bitrue-exchange/bitrue-official-api-docs#all-orders-user_data) | complete | get_all_orders |
+| [Account information (USER_DATA)](https://github.com/Bitrue-exchange/bitrue-official-api-docs#account-information-user_data) | complete | get_account |
 | | complete | get_asset_balance
-| [Account trade list (USER_DATA)]	 (https://github.com/Bitrue-exchange/bitrue-official-api-docs#account-trade-list-user_data) | complete | get_my_trades |
+| [Account trade list (USER_DATA)](https://github.com/Bitrue-exchange/bitrue-official-api-docs#account-trade-list-user_data) | complete | get_my_trades |
 | NOT AVAILABLE	| complete | get_system_status |
 | NOT AVAILABLE	| complete | get_account_status |
 | NOT AVAILABLE	| complete | get_dust_log |
@@ -91,9 +88,9 @@ Features
 Quick Start
 -----------
 
-`Register an account with Binance <https://www.bitrue.com/activity/task/task-landing?inviteCode=EWHAHT>`_.
+[Register an account with Bitrue](https://www.bitrue.com/activity/task/task-landing?inviteCode=EWHAHT)
 
-`Generate an API Key <https://www.bitrue.com/account/api>`_ and assign relevant permissions.
+[Generate an API Key](https://www.bitrue.com/account/api)and assign relevant permissions.
 
 .. code:: bash
 
@@ -122,15 +119,15 @@ Quick Start
 
     # withdraw 1000 XRP
     # check docs for assumptions around withdrawals
-    from binance.exceptions import BinanceAPIException, BinanceWithdrawException
+    from bitrue.exceptions import BitrueAPIException, BitrueWithdrawException
     try:
         result = client.withdraw(
             asset='ETH',
             address='<eth_address>',
             amount=100)
-    except BinanceAPIException as e:
+    except BitrueAPIException as e:
         print(e)
-    except BinanceWithdrawException as e:
+    except BitrueWithdrawException as e:
         print(e)
     else:
         print("Success")
