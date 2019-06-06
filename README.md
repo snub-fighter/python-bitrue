@@ -98,6 +98,7 @@ Manual Method
      Download zip
      Unzip
      Place package (folder 'python-bitrue') in 'site-packages' directory or preferred location
+       ('Python Install Folder ' \Lib\site-packages)
      open command prompt
      pip install -e python-bitrue
      
