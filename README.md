@@ -96,7 +96,8 @@ Automatic Method
 Manual Method
 
      Download zip
-     Place package in 'site-packages' directory or preferred location
+     Unzip
+     Place package (folder 'python-bitrue') in 'site-packages' directory or preferred location
      open command prompt
      pip install -e python-bitrue
      
