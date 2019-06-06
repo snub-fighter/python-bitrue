@@ -10,9 +10,9 @@ if __name__ == '__main__':
     print(client._order_format_print(trades))
 
 
-```python
+'''
 symbol         id    orderId  origClientOrderId          price         qty  commission    commissionAssert             time  isBuyer    isMaker    isBestMatch
 --------  -------  ---------  -------------------  -----------  ----------  ------------  ------------------  -------------  ---------  ---------  -------------
 HOTXRP    1583958   53673021                         0.004473      717                                        1559843532000  True       True       True
-```
 
+'''
