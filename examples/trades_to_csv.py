@@ -4,7 +4,7 @@ import pandas as pd
 if __name__ == '__main__':
     client = Client(api_key='',
                     api_secret='',
-                    coil_enabled=False)
+                    )
 
 
     trades = client.get_my_trades()
