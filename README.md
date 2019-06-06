@@ -100,6 +100,7 @@ Manual Method
      Place package (folder 'python-bitrue') in 'site-packages' directory or preferred location
        ('Python Install Folder ' \Lib\site-packages)
      open command prompt
+     Navigate to above folder.
      pip install -e python-bitrue
      
 .. code:: python
