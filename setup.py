@@ -4,13 +4,12 @@ from setuptools import setup, find_packages
 setup(
     name='python-bitrue',
     version='0.0.1',
-    packages=['bitrue'],
+    packages=find_packages(),
     description='Bitrue REST API python implementation',
     url='https://github.com/snub-fighter/python-bitrue',
     author='snub-fighter',
     license='MIT',
     author_email='',
-    install_requires=['sys','logging','configparser','tabulate','multiprocessing','selenium','hashlib','hmac','time','operator','atexit','apscheduler','requests', 'six', 'Twisted', 'pyOpenSSL', 'autobahn', 'service-identity', 'dateparser', 'urllib3', 'chardet', 'certifi', 'cryptography', ],
     keywords='bitrue exchange rest api xrp bitcoin ethereum btc eth neo',
     classifiers=[
         'Intended Audience :: Developers',
