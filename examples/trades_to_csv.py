@@ -9,6 +9,7 @@ if __name__ == '__main__':
 
     trades = client.get_my_trades()
     df = pd.DataFrame(trades)
+    df = df[['symbol','id','orderId','origClientOrderId','price','qty','commission','commissionAssert','time','isBuyer','isMaker','isBestMatch']]
     df.to_csv('bitrue_trades.csv', sep=',', encoding='utf-8')
 
 
