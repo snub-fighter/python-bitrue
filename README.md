@@ -87,11 +87,19 @@ Quick Start
 
 [Generate an API Key](https://www.bitrue.com/account/api)and assign relevant permissions.
 
-.. code:: bash
+Automatic Method
 
+.. code:: bash (PyPi)
+ 
     pip install python-bitrue (pending release)
+    
+Manual Method
 
-
+     Download zip
+     Place package in 'site-packages' directory or preferred location
+     open command prompt
+     pip install -e python-bitrue
+     
 .. code:: python
 
     from bitrue.client import Client
