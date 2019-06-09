@@ -28,8 +28,9 @@ if __name__ == '__main__':
         if orderstatus['status'] == 'FILLED':
             #buy back using gains
             buyback_order = client.order_limit_buy(symbol='XRPUSDT', quantity=buyback_qty, price=buyback_price)
+            print(buyback_order)
         else:
-            os.system('cls' if os.name == 'nt' else 'clear')  # For Windows
+            os.system('cls' if os.name == 'nt' else 'clear')  # clear screen
             print('OrderId: {} - still open'.format(orderId_Sell))
             time.sleep(1)
 '''
