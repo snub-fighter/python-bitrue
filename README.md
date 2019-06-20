@@ -103,6 +103,13 @@ Manual Method
      Navigate to above folder.
      pip install -e python-bitrue
      
+     Linux
+     python3 -m venv bitruevenv
+     source bitruevenv/bin/activate
+     git clone https://github.com/snub-fighter/python-bitrue.git
+     cd bitrue
+     python3 -m pip install -r requirements.txt
+     
 .. code:: python
 
     from bitrue.client import Client
