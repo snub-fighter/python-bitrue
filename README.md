@@ -108,6 +108,7 @@ Manual Method
      source bitruevenv/bin/activate
      git clone https://github.com/snub-fighter/python-bitrue.git
      cd bitrue
+     apt-get install python3-dev
      python3 -m pip install -r requirements.txt
      
 .. code:: python
