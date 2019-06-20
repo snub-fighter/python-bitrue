@@ -12,11 +12,13 @@ import time
 from operator import itemgetter
 from .helpers import date_to_milliseconds, interval_to_milliseconds
 from .exceptions import BitrueAPIException, BitrueRequestException, BitrueWithdrawException
-import os
 import atexit
 from multiprocessing import Queue
 from apscheduler.schedulers.background import BackgroundScheduler
-from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.firefox.options import Options as FireFox_Options
+from selenium.webdriver.chrome.options import Options as Chrome_Options
+import os
+
 q = Queue()
 
 class Client(object):
@@ -83,7 +85,7 @@ class Client(object):
     AGG_BUYER_MAKES = 'm'
     AGG_BEST_MATCH = 'M'
 
-    def __init__(self, api_key, api_secret, requests_params=None, coil_enabled=True):
+    def __init__(self, api_key, api_secret, requests_params=None, coil_enabled=True, headless=True, browser='firefox'):
         atexit.register(self._close_coil)
 
         """
@@ -105,12 +107,36 @@ class Client(object):
         self.API_SECRET = api_secret
         self.session = self._init_session()
         self._requests_params = requests_params
+        self.ff_coil_extId = 'coilfirefoxextension@coil.com.xpi'
+        self.chrome_coil_extId = 'locbifcbeldmnphbgkdigjmkbfkhbnca'
+        self.chrome_coil_extId = 'locbifcbeldmnphbgkdigjmkbfkhbnca'
+        self.chrome_bin = '/usr/bin/google-chrome-stable'
+
+        # Locations
+        self.coilurl = 'https://coil.com/p/nerf_herder/Python-Package-Coil-Enabled/GRn2W-j5t'
+
+
+        self.gecko_source_win64 = 'https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-win64.zip'
+        self.gecko_source_linux64 = 'https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-linux64.tar.gz'
+        self.gecko_source_linux32 = 'https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-linux32.tar.gz'
+
+        self.chrome_driver74_win_url = 'https://chromedriver.storage.googleapis.com/74.0.3729.6/chromedriver_win32.zip'
+        self.chrome_driver74_mac_url = 'https://chromedriver.storage.googleapis.com/74.0.3729.6/chromedriver_mac64.zip'
+        self.chrome_driver74_linux_url = 'https://chromedriver.storage.googleapis.com/74.0.3729.6/chromedriver_linux64.zip'
+
+        self.chrome_driver75_win_url = 'https://chromedriver.storage.googleapis.com/75.0.3770.8/chromedriver_win32.zip'
+        self.chrome_driver75_mac_url = 'https://chromedriver.storage.googleapis.com/75.0.3770.8/chromedriver_mac64.zip'
+        self.chrome_driver75_linux_url = 'https://chromedriver.storage.googleapis.com/75.0.3770.8/chromedriver_linux64.zip'
+
+        self.chrome_driver76_win_url = 'https://chromedriver.storage.googleapis.com/76.0.3809.12/chromedriver_win32.zip'
+        self.chrome_driver76_mac_url = 'https://chromedriver.storage.googleapis.com/76.0.3809.12/chromedriver_mac64.zip'
+        self.chrome_driver76_linux_url = 'https://chromedriver.storage.googleapis.com/76.0.3809.12/chromedriver_linux64.zip'
 
         # init DNS and SSL cert
         self.ping()
         if coil_enabled:
             # self.open_coil()
-            self.p1_coil = mp.Process(target=self.open_coil, args=(q,))
+            self.p1_coil = mp.Process(target=self.open_coil, args=(q,headless,browser,))
             self.p1_coil.daemon = True
             self.p1_coil.start()
 
@@ -148,54 +174,217 @@ class Client(object):
         query_string = '&'.join(["{}={}".format(d[0], d[1]) for d in ordered_data])
         m = hmac.new(self.API_SECRET.encode('utf-8'), query_string.encode('utf-8'), hashlib.sha256)
         return m.hexdigest()
+
+    def file_zunip(self, file, path):
+        import zipfile
+        zip_ref = zipfile.ZipFile(file, 'r')
+        zip_ref.extractall(path=path)
+        zip_ref.close()
+
+    def file_unzip_tar(self, file, path):
+        import tarfile
+        file = tarfile.open(file)
+        file.extractall(path=path)
+        file.close()
+
     def get_coil_url(self):
-        self.driver.get(self.coilurl)
-
-
+        return self.driver.get(self.coilurl)
 
     def get_firefox_profile_dir(self):
+        from pathlib import Path
+        self.gecko_path = os.path.dirname(__file__)
+
         if sys.platform in ['linux', 'linux2']:
             import subprocess
+
+            self.ff_gecko = Path(self.gecko_path + '/geckodriver')
+
+            bits = 'uname -m'
+            ver_32_64 = subprocess.getstatusoutput(bits)
+
             cmd = "ls -d /home/$USER/.mozilla/firefox/*.default/"
-            p = subprocess.Popen([cmd], shell=True, stdout=subprocess.PIPE)
-            FF_PRF_DIR = p.communicate()[0][0:-2]
+            fp = subprocess.Popen([cmd], shell=True, stdout=subprocess.PIPE)
+            FF_PRF_DIR = fp.communicate()[0][0:-2]
             FF_PRF_DIR_DEFAULT = str(FF_PRF_DIR, 'utf-8')
-        elif sys.platform == 'win32' or 'nt':
-            import os
+
+            ff_ext_path = os.path.join(FF_PRF_DIR_DEFAULT, 'extensions')
+            self.ff_coil_loc = os.path.join(ff_ext_path, self.ff_coil_extId)
+            ff_coil_enabled = os.path.exists(self.ff_coil_loc)
+            if ff_coil_enabled:
+                if 'x86_64' in ver_32_64:
+                    if not self.ff_gecko.is_file():
+                        import wget
+                        self.gecko_targz = self.gecko_path + '/' + self.gecko_source_linux64.split('/')[-1]
+                        wget.download(self.gecko_source_linux64, self.gecko_path)
+                        self.file_unzip_tar(self.gecko_path + '/' + self.gecko_targz)
+                        os.remove(self.gecko_path + '/' + self.gecko_targz)
+                    if self.ff_gecko.is_file():
+                            self.data_path = FF_PRF_DIR_DEFAULT
+                            self.gecko = self.ff_gecko
+
+                if 'i368' in ver_32_64:
+                    if not self.ff_gecko.is_file():
+                        import wget
+                        self.gecko_targz = self.gecko_path + '/' + self.gecko_source_linux32.split('/')[-1]
+                        wget.download(self.gecko_source_linux32, self.gecko_path)
+                        self.file_unzip_tar(self.gecko_path + '/' + self.gecko_targz)
+                        os.remove(self.gecko_path + '/' + self.gecko_targz)
+                    if self.ff_gecko.is_file():
+                            self.data_path = FF_PRF_DIR_DEFAULT
+                            self.gecko = self.ff_gecko
+
+        elif sys.platform == 'win32' or 'nt': 
+            from pathlib import Path
+            self.gecko = self.gecko_path + "\geckodriver.exe"
             mozilla_profile = os.path.join(os.getenv('APPDATA'), r'Mozilla\Firefox')
             mozilla_profile_ini = os.path.join(mozilla_profile, r'profiles.ini')
             profile = configparser.ConfigParser()
             profile.read(mozilla_profile_ini)
             FF_PRF_DIR_DEFAULT = os.path.normpath(os.path.join(mozilla_profile, profile.get('Profile0', 'Path')))
-            # import glob
-            # APPDATA = os.getenv('APPDATA')
-            # FF_PRF_DIR = "%s\\Mozilla\\Firefox\\Profiles\\" % APPDATA
-            # PATTERN = FF_PRF_DIR + "*default*"
-            # FF_PRF_DIR_DEFAULT = glob.glob(PATTERN)[0]
+            ff_ext_path = os.path.join(FF_PRF_DIR_DEFAULT, 'extensions')
+            self.ff_coil_loc = os.path.join(ff_ext_path, self.ff_coil_extId)
+            ff_coil_enabled = os.path.exists(self.ff_coil_loc)
 
-        return FF_PRF_DIR_DEFAULT
+            if ff_coil_enabled:
+                ff_gecko = Path(self.gecko)
+                if ff_gecko.is_file():
+                    self.data_path = FF_PRF_DIR_DEFAULT
+                else:
+                    import wget
+                    wget.download(self.gecko_source_win64,self.gecko_path)
+                    gecko_win64zip = self.gecko_path + '\\' + self.gecko_source_win64.split('/')[-1]
+                    self.file_zunip(gecko_win64zip, self.gecko_path)
+                    if ff_gecko.is_file():
+                        os.remove(gecko_win64zip)
+                        self.data_path = FF_PRF_DIR_DEFAULT
 
-    def open_coil(self, q, headless=True):
-        #find module path
-        gecko = os.path.dirname(os.path.dirname(__file__))
-        self.gecko = gecko + "\coil\geckodriver.exe"
-        #schedule page refresh
-        scheduler = BackgroundScheduler()
+
+    def get_chrome_profile_dir(self):
+        from pathlib import Path
+        self.chrome_driver_dir = os.path.dirname(__file__)
+
+        if sys.platform in ['linux', 'linux2']:
+            import subprocess
+            self.chromedriver = 'chromedriver'
+            chrome_ver = subprocess.Popen("google-chrome --version", stdout=subprocess.PIPE, universal_newlines=True,
+                                          shell=True).communicate()[0]
+            chrome_ver = chrome_ver.replace('Google Chrome ', '')
+            chrome_ver = chrome_ver.split('.')[0]
+            self.chrome_driver_file_path = self.chrome_driver_dir + self.chromedriver + chrome_ver
+            self.chrome_driver76_linux_url = 'https://chromedriver.storage.googleapis.com/76.0.3809.12/chromedriver_linux64.zip'
+
+            if not Path.is_file(self.chrome_driver_file_path):
+                import wget
+                self.chrome_zip = 'chromedriver_linux64.zip'
+                self.chrome_url = 'self.chrome_driver' + chrome_ver + 'linux_url'
+                if chrome_ver == '76':
+                    getattr(wget,'download')(self.chrome_url)
+                    # wget.download(self.chrome_url, self.chrome_driver_dir)
+                    self.file_zunip(self.chrome_driver_file_path + '/' + self.chrome_zip)
+                    os.remove(self.chrome_driver_file_path + '/' + self.chrome_zip)
+                    os.rename('chromedriver','chromedriver' + chrome_ver)
+                elif chrome_ver == '75':
+                    wget.download(self.chrome_driver75_linux_url)
+                elif chrome_ver == '74':
+                    wget.download(self.chrome_driver74_linux_url)
+        elif sys.platform in ['win32']:
+            
+            self.chrome_winzip = 'chromedriver_win32.zip'
+            chrome_driver_exe = 'chromedriver.exe'
+            
+            self.chrome_profile = os.path.join(os.getenv('LOCALAPPDATA'), r'Google\Chrome\User Data\Default')
+            self.chrome_profile_ext = os.path.join(self.chrome_profile, r'Extensions')
+            self.coil_ext_id = 'locbifcbeldmnphbgkdigjmkbfkhbnca'
+            self.coil_ext_id_path = os.path.join(self.chrome_profile_ext, self.coil_ext_id)
+            if os.path.isdir(self.coil_ext_id_path):
+                # CHECK CHROME VERSION
+                chrome_ver = os.popen(
+                    r'reg query "HKEY_CURRENT_USER\Software\Google\Chrome\BLBeacon" /v version').read()
+                chrome_ver = chrome_ver.split(r'REG_SZ')[1]
+                chrome_ver = chrome_ver.split('.')[0].replace(' ', '')
+
+            if chrome_ver == '76':
+                chrome_driver_ver_exe = 'chromedriver76.exe'
+
+                if not os.path.isfile(self.chrome_driver_dir + '\\' + chrome_driver_ver_exe):  # DOWNLOAD CHROMEDRIVER
+                    import wget
+                    wget.download(self.chrome_driver76_win_url, self.chrome_driver_dir)
+                    self.file_zunip(self.chrome_driver_dir + '\\' + self.chrome_winzip,
+                                    self.chrome_driver_dir)
+                    os.rename(self.chrome_driver_dir + '\\' + chrome_driver_exe,
+                              self.chrome_driver_dir + '\\' + chrome_driver_ver_exe)
+                    os.remove(self.chrome_driver_dir + '\\' + self.chrome_winzip)
+                if os.path.isfile(self.chrome_driver_dir + '\\' + chrome_driver_ver_exe):
+                    self.chrome_profile = os.path.join(os.getenv('LOCALAPPDATA'),r'Google\Chrome\User Data')
+                    self.options.add_argument("user-data-dir=" + self.chrome_profile)
+                    self.driver = webdriver.Chrome(chrome_options=self.options,executable_path=self.chrome_driver_dir + '\\' + chrome_driver_ver_exe)
+
+            elif chrome_ver == '75':
+                chrome_driver_ver_exe = 'chromedriver75.exe'
+
+                if not os.path.isfile(self.chrome_driver_dir + '\\' + chrome_driver_ver_exe):  # DOWNLOAD CHROMEDRIVER
+                    import wget
+                    wget.download(self.chrome_driver75_win_url, self.chrome_driver_dir)
+                    self.file_zunip(self.chrome_driver_dir + '\\' + self.chrome_winzip,
+                                    self.chrome_driver_dir)
+                    os.rename(self.chrome_driver_dir + '\\' + chrome_driver_exe,
+                              self.chrome_driver_dir + '\\' + chrome_driver_ver_exe)
+                    os.remove(self.chrome_driver_dir + '\\' + self.chrome_winzip)
+                if os.path.isfile(self.chrome_driver_dir + '\\' + chrome_driver_ver_exe):
+                    self.chrome_profile = os.path.join(os.getenv('LOCALAPPDATA'),r'Google\Chrome\User Data')
+                    self.options.add_argument("user-data-dir=" + self.chrome_profile)
+                    self.driver = webdriver.Chrome(chrome_options=self.options,executable_path=self.chrome_driver_dir + '\\' + chrome_driver_ver_exe)
+
+            elif chrome_ver == '74':
+                chrome_driver_ver_exe = 'chromedriver74.exe'
+                if not os.path.isfile(self.chrome_driver_dir + '\\' + chrome_driver_ver_exe):  # DOWNLOAD CHROMEDRIVER
+                    import wget
+                    wget.download(self.chrome_driver74_win_url, self.chrome_driver_dir)
+                    self.file_zunip(self.chrome_driver_dir + '\\' + self.chrome_winzip, self.chrome_driver_dir)
+                    os.rename(self.chrome_driver_dir + '\\' + chrome_driver_exe,
+                              self.chrome_driver_dir + '\\' + chrome_driver_ver_exe)
+                    os.remove(self.chrome_driver_dir + '\\' + self.chrome_winzip)
+                if os.path.isfile(self.chrome_driver_dir + '\\' + chrome_driver_ver_exe):
+                    self.chrome_profile = os.path.join(os.getenv('LOCALAPPDATA'),r'Google\Chrome\User Data')
+                    self.options.add_argument("user-data-dir=" + self.chrome_profile)
+                    self.driver = webdriver.Chrome(chrome_options=self.options,executable_path=self.chrome_driver_dir + '\\' + chrome_driver_ver_exe)
+
+            else:
+                logging.info('No Chrome browser supported')
+
+
+    def schedule(self):
+        scheduler = BackgroundScheduler() # SCHEDULE PAGE REFRESH EVERY 5 MINS
         scheduler.add_job(self.get_coil_url, 'interval',seconds=300)
         scheduler.start()
-        data_path = self.get_firefox_profile_dir()
-        #find firefox path
+    def open_coil(self, q, headless=True, browser='firefox'):
 
+        if browser == 'chrome':
+            try:
+                self.options = webdriver.chrome.options.Options()
+                self.options.headless = headless
+                self.get_chrome_profile_dir()
+                self.driver.get(self.coilurl)  # OPEN URL
+                self.schedule()
+            except:
+                logging.info('No Chrome Browser Supported for Coil')
+        elif browser == 'firefox':
+            try: # firefox + coil
+                self.options = FireFox_Options()
+                self.options.headless = headless
+                self.get_firefox_profile_dir()
+                self.driver = webdriver.Firefox(options=self.options, firefox_profile=self.data_path, executable_path=self.gecko)
+                self.driver.get(self.coilurl)  # OPEN URL
+                self.schedule()
 
-        options = Options()
-        options.headless = headless
-        self.driver = webdriver.Firefox(options=options, firefox_profile=data_path, executable_path=self.gecko)
-        self.coilurl = 'https://coil.com/p/nerf_herder/Python-Package-Coil-Enabled/GRn2W-j5t'
-        self.driver.get(self.coilurl)
+            except:
+                logging.info('No \' Firefox Browser\' Supported for Coil')
+
         while True:
             if q.empty():
                 pass
             else:
+                print(q)
                 self.driver.close()
 
     def _order_params(self, data):
