@@ -1,7 +1,7 @@
 # python-bitrue
 A package to communicate with the Bitrue API 
 ==================================
-Welcome to python-bitrue 0.0.1
+Welcome to python-bitrue 0.0.2
 ==================================
 
 Note
