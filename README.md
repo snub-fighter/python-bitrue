@@ -91,7 +91,7 @@ Automatic Method
 
 .. code:: bash (PyPi)
  
-    pip install python-bitrue (pending release)
+    pip install bitrue-python  *OFFICIALLY RELEASED - https://pypi.org/project/bitrue-python/
     
 Manual Method
 
