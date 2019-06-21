@@ -196,14 +196,22 @@ Manual Method
 
 
 
- 
-    
+Coil
+------
+ Coil is enabled by default in this package so that if you use it a healdess browser will attempt to load ONLY if you have the coil extension installed on that browser.  It will attempt firefox by default as it is the most stable.  If you do not have the extension installed on firefox nothing happens.  Either way this should be completely transparent to you.  I have put a lot of effort into getting the package itself and coil to function seemlessly.  If you wish to disable it you can either turn the coil_enabled=True flag to False when calling the client.Client class or statically disable it inside client.Client under the __init__ function.
+
+Example Setup (default)
+
+    if __name__ == '__main__':
+    client = Client(api_key='2f0982022fc09377f43bc1da4bcb6c2219778ffe256cb96d0e966362908f0d51',
+                    api_secret='8ec2561b0b457b6b1695f4bc6e95eb11663723fe510e39baed92998187075150',
+                    coil_enabled=True, headless=True, browser='firefox')
 
 Donate
 ------
 
 If this library helped you out feel free to donate.
-
+- SIGN UP FOR COIL AND ADD EXTENSION TO FIREFOX -> coil.com
 - ETH: 0xd6933c5199Aa7Ac295dEff154a6AaF3342F43C90
 - XRP: rsCJ7ZKeXKacVSsiBZUZqgKxteradBUEuR
 - BTC: 1Dknp6L6oRZrHDECRedihPzx2sSfmvEBys
