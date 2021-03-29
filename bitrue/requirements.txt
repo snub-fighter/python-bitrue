@@ -14,7 +14,7 @@ MarkupSafe==1.1.1
 pkginfo==1.5.0.1
 poyo==0.4.2
 project-template-python==0.0.1
-Pygments==2.4.2
+Pygments==2.7.4
 python-dateutil==2.8.0
 pytz==2019.1
 readme-renderer==24.0
