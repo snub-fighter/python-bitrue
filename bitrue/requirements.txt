@@ -1,5 +1,5 @@
 apscheduler==3.6.0
-arrow==0.14.2
+arrow==0.15.1
 binaryornot==0.4.4
 bleach==3.1.1
 certifi==2019.3.9
